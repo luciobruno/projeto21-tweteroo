@@ -39,21 +39,34 @@ export class AppService {
   getAllTweets(page: number) {
     if (page < 1) {
       throw new BadRequestException();
-    }
-    if (page >= 1) {
-      const itemsPerPage = 15;
-      const endIndex = itemsPerPage * page;
-      const startIndex = endIndex - itemsPerPage;
-      const pagination = this.tweets.slice(startIndex, endIndex).reverse();
-      const tweets = pagination.map((tweet) => ({
+    } else {
+      if (page >= 1) {
+        const itemsPerPage = 15;
+        const endIndex = itemsPerPage * page;
+        const startIndex = endIndex - itemsPerPage;
+        const pagination = this.tweets.slice(startIndex, endIndex).reverse();
+        const tweets = pagination.map((tweet) => ({
+          username: tweet._findUser._findUsername,
+          avatar: tweet._findUser._findAvatar,
+          tweet: tweet._findTweet,
+        }));
+        return tweets;
+      }
+      const itemsPerPage = this.tweets.slice(-15).reverse();
+      const tweets = itemsPerPage.map((tweet) => ({
         username: tweet._findUser._findUsername,
         avatar: tweet._findUser._findAvatar,
         tweet: tweet._findTweet,
       }));
       return tweets;
     }
-    const itemsPerPage = this.tweets.slice(-15);
-    const tweets = itemsPerPage.reverse().map((tweet) => ({
+  }
+  getTweetsByUser(username: string) {
+    const allTweets = this.tweets;
+    const userTweets = allTweets.filter(
+      (tweet) => tweet._findUser._findUsername === username,
+    );
+    const tweets = userTweets.reverse().map((tweet) => ({
       username: tweet._findUser._findUsername,
       avatar: tweet._findUser._findAvatar,
       tweet: tweet._findTweet,

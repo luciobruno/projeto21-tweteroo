@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -31,7 +32,12 @@ export class AppController {
   }
 
   @Get('/tweets')
-  getTweets(@Query('page') page: number) {
+  getAllTweets(@Query('page') page: number) {
     return this.appService.getAllTweets(page);
+  }
+
+  @Get('/tweets/:username')
+  getTweetsByUser(@Param('username') username: string) {
+    return this.appService.getTweetsByUser(username);
   }
 }
