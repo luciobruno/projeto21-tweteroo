@@ -6,4 +6,12 @@ export class User {
     this.username = username;
     this.avatar = avatar;
   }
+
+  get _findUsername() {
+    return this.username;
+  }
+
+  get _findAvatar() {
+    return this.avatar;
+  }
 }
